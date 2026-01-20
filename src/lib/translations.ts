@@ -82,7 +82,8 @@ export const translations = {
       title: "Marriel",
       titleAccent: "Barber",
       titleEnd: "Shop",
-      subtitle: "Where tradition meets modern craftsmanship. Experience the art of premium grooming in an atmosphere of refined elegance.",
+      subtitle:
+        "Where tradition meets modern craftsmanship. Experience the art of premium grooming in an atmosphere of refined elegance.",
       bookAppointment: "Book Appointment",
       viewServices: "View Services",
       hours: "Mon-Sat: 9am - 8pm",
@@ -93,12 +94,42 @@ export const translations = {
       titleAccent: "Services",
       subtitle: "Premium grooming services crafted with precision and care",
       items: [
-        { name: "Classic Haircut", description: "Precision cut tailored to your style", duration: "45 min", price: "$35" },
-        { name: "Beard Grooming", description: "Expert shaping and conditioning", duration: "30 min", price: "$25" },
-        { name: "Hot Towel Shave", description: "Traditional straight razor experience", duration: "45 min", price: "$40" },
-        { name: "Hair & Beard Combo", description: "Complete grooming package", duration: "75 min", price: "$55" },
-        { name: "Kids Haircut", description: "Gentle care for young gentlemen", duration: "30 min", price: "$25" },
-        { name: "Grey Blending", description: "Natural color enhancement", duration: "45 min", price: "$45" },
+        {
+          name: "Classic Haircut",
+          description: "Precision cut tailored to your style",
+          duration: "45 min",
+          price: "$35",
+        },
+        {
+          name: "Beard Grooming",
+          description: "Expert shaping and conditioning",
+          duration: "30 min",
+          price: "$25",
+        },
+        {
+          name: "Hot Towel Shave",
+          description: "Traditional straight razor experience",
+          duration: "45 min",
+          price: "$40",
+        },
+        {
+          name: "Hair & Beard Combo",
+          description: "Complete grooming package",
+          duration: "75 min",
+          price: "$55",
+        },
+        {
+          name: "Kids Haircut",
+          description: "Gentle care for young gentlemen",
+          duration: "30 min",
+          price: "$25",
+        },
+        {
+          name: "Grey Blending",
+          description: "Natural color enhancement",
+          duration: "45 min",
+          price: "$45",
+        },
       ],
       bookNow: "Book Now",
     },
@@ -117,7 +148,8 @@ export const translations = {
         {
           name: "Marriel",
           role: "Master Barber / Founder",
-          description: "Premium cuts, classic techniques, modern craftsmanship.",
+          description:
+            "Premium cuts, classic techniques, modern craftsmanship.",
         },
         {
           name: "Senior Barber",
@@ -160,7 +192,8 @@ export const translations = {
       title: "Barbearia",
       titleAccent: "Marriel",
       titleEnd: "",
-      subtitle: "Onde a tradição encontra a arte moderna. Experimente o cuidado premium em um ambiente de elegância refinada.",
+      subtitle:
+        "Onde a tradição encontra a arte moderna. Experimente o cuidado premium em um ambiente de elegância refinada.",
       bookAppointment: "Agendar Horário",
       viewServices: "Ver Serviços",
       hours: "Seg-Sáb: 9h - 20h",
@@ -171,12 +204,42 @@ export const translations = {
       titleAccent: "Serviços",
       subtitle: "Serviços de barbearia premium com precisão e cuidado",
       items: [
-        { name: "Corte Clássico", description: "Corte de precisão adaptado ao seu estilo", duration: "45 min", price: "$35" },
-        { name: "Barba", description: "Modelagem e hidratação profissional", duration: "30 min", price: "$25" },
-        { name: "Barbear com Toalha Quente", description: "Experiência tradicional com navalha", duration: "45 min", price: "$40" },
-        { name: "Corte + Barba", description: "Pacote completo de cuidados", duration: "75 min", price: "$55" },
-        { name: "Corte Infantil", description: "Cuidado especial para os pequenos", duration: "30 min", price: "$25" },
-        { name: "Disfarce de Grisalhos", description: "Coloração natural e discreta", duration: "45 min", price: "$45" },
+        {
+          name: "Corte Clássico",
+          description: "Corte de precisão adaptado ao seu estilo",
+          duration: "45 min",
+          price: "$35",
+        },
+        {
+          name: "Barba",
+          description: "Modelagem e hidratação profissional",
+          duration: "30 min",
+          price: "$25",
+        },
+        {
+          name: "Barbear com Toalha Quente",
+          description: "Experiência tradicional com navalha",
+          duration: "45 min",
+          price: "$40",
+        },
+        {
+          name: "Corte + Barba",
+          description: "Pacote completo de cuidados",
+          duration: "75 min",
+          price: "$55",
+        },
+        {
+          name: "Corte Infantil",
+          description: "Cuidado especial para os pequenos",
+          duration: "30 min",
+          price: "$25",
+        },
+        {
+          name: "Disfarce de Grisalhos",
+          description: "Coloração natural e discreta",
+          duration: "45 min",
+          price: "$45",
+        },
       ],
       bookNow: "Agendar",
     },
@@ -195,7 +258,8 @@ export const translations = {
         {
           name: "Marriel",
           role: "Barbeiro Mestre / Fundador",
-          description: "Cortes premium, técnicas clássicas, artesanato moderno.",
+          description:
+            "Cortes premium, técnicas clássicas, artesanato moderno.",
         },
         {
           name: "Barbeiro Sênior",
