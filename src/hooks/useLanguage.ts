@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
 import { Language, translations, Translations } from "@/lib/translations";
+import { useCallback, useState } from "react";
 
 const STORAGE_KEY = "marriel-lang";
 
@@ -19,7 +19,8 @@ function getInitialLanguage(): Language {
   }
 
   // 3. Browser language detection
-  const browserLang = navigator.language || (navigator as any).userLanguage || "en";
+  const nav = navigator as Navigator & { userLanguage?: string };
+  const browserLang = nav.language || nav.userLanguage || "en";
   if (browserLang.toLowerCase().startsWith("pt")) {
     return "pt";
   }
