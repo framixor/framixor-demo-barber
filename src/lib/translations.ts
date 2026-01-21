@@ -7,10 +7,24 @@ interface ServiceItem {
   price: string;
 }
 
+interface TeamMemberContact {
+  phoneDisplay?: string; // ex: "203-417-3905"
+  phoneE164?: string; // ex: "+12034173905"
+  whatsappE164?: string; // ex: "+12034173905"
+  instagramUrl?: string; // ex: "https://instagram.com/marriel_barber"
+}
+
 interface TeamMember {
   name: string;
   role: string;
   description: string;
+
+  // Optional extras (demo-friendly, não quebra nada)
+  contact?: TeamMemberContact;
+  badges?: string[];
+
+  // Keeps images stable even if array order changes
+  imageKey?: "marriel" | "barber2";
 }
 
 export interface Translations {
@@ -149,15 +163,27 @@ export const translations = {
           name: "Marriel",
           role: "Master Barber / Founder",
           description:
-            "Premium cuts, classic techniques, modern craftsmanship.",
+            "Specialized in modern cuts — fades, taper fades, and clean finishing. Serving mostly Brazilian clients with premium attention to detail.",
+          badges: ["Skin Fade", "Taper Fade", "Line-up", "Beard"],
+          imageKey: "marriel",
+          contact: {
+            phoneDisplay: "203-417-3905",
+            phoneE164: "+12034173905",
+            whatsappE164: "+12034173905",
+            instagramUrl: "https://instagram.com/marriel_barber",
+          },
         },
         {
-          name: "Senior Barber",
-          role: "Senior Barber",
-          description: "Precision fades and contemporary styles.",
+          name: "Barber #2",
+          role: "Senior Barber (Demo)",
+          description:
+            "Precision fades and textured modern styles — clean blends, sharp edges, and consistent results.",
+          badges: ["Skin Fade", "Textured Crop", "Beard"],
+          imageKey: "barber2",
         },
       ],
     },
+
     // Visit / Contact
     visit: {
       title: "Visit",
@@ -259,12 +285,23 @@ export const translations = {
           name: "Marriel",
           role: "Barbeiro Mestre / Fundador",
           description:
-            "Cortes premium, técnicas clássicas, artesanato moderno.",
+            "Especializado em cortes modernos — degradê, taper fade e acabamento limpo. Atende majoritariamente brasileiros com atenção premium aos detalhes.",
+          badges: ["Degradê", "Taper Fade", "Pezinho", "Barba"],
+          imageKey: "marriel",
+          contact: {
+            phoneDisplay: "203-417-3905",
+            phoneE164: "+12034173905",
+            whatsappE164: "+12034173905",
+            instagramUrl: "https://instagram.com/marriel_barber",
+          },
         },
         {
-          name: "Barbeiro Sênior",
-          role: "Barbeiro Sênior",
-          description: "Degradês precisos e estilos contemporâneos.",
+          name: "Barbeiro #2",
+          role: "Barbeiro Sênior (Demo)",
+          description:
+            "Degradês precisos e estilos modernos texturizados — transição limpa, linhas bem marcadas e consistência no resultado.",
+          badges: ["Degradê", "Corte Texturizado", "Barba"],
+          imageKey: "barber2",
         },
       ],
     },
