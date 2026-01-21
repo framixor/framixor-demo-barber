@@ -1,5 +1,5 @@
-import { Scissors, Star, Clock, MapPin, Phone, Instagram } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
+import { Clock, Instagram, MapPin, Phone, Scissors, Star } from "lucide-react";
 
 // Image imports
 import heroBg from "@/assets/hero-barbershop.jpg";
@@ -9,7 +9,7 @@ import portfolio3 from "@/assets/portfolio-3.jpg";
 import portfolio4 from "@/assets/portfolio-4.jpg";
 import portfolio5 from "@/assets/portfolio-5.jpg";
 import portfolio6 from "@/assets/portfolio-6.jpg";
-import team1 from "@/assets/team-1.jpg";
+import team1 from "@/assets/team-1.png";
 import team2 from "@/assets/team-2.jpg";
 
 const portfolioImages = [
@@ -20,7 +20,33 @@ const portfolioImages = [
   portfolio5,
   portfolio6,
 ];
+
 const teamImages = [team1, team2];
+
+const teamImageByKey = {
+  marriel: teamImages[0],
+  barber2: teamImages[1],
+} as const;
+
+type TeamImageKey = keyof typeof teamImageByKey;
+
+function getTeamImageSrc(imageKey: unknown, index: number) {
+  if (typeof imageKey === "string") {
+    const key = imageKey as TeamImageKey;
+    return teamImageByKey[key] ?? teamImages[index];
+  }
+  return teamImages[index];
+}
+
+const ADDRESS = "36 Federal Rd, Danbury, CT 06810";
+const MAPS_URL =
+  "https://maps.google.com/?q=36%20Federal%20Rd%2C%20Danbury%2C%20CT%2006810";
+
+const WA_PHONE_E164 = "12034173905";
+const WA_MESSAGE = "Hello, I'd like to book an appointment at Marriel Barber.";
+const WA_URL = `https://wa.me/${WA_PHONE_E164}?text=${encodeURIComponent(
+  WA_MESSAGE,
+)}`;
 
 const Index = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -69,21 +95,29 @@ const Index = () => {
             <div className="flex items-center gap-1 text-sm">
               <button
                 onClick={() => setLanguage("en")}
-                className={`px-2 py-1 rounded transition-colors ${language === "en" ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                className={`px-2 py-1 rounded transition-colors ${
+                  language === "en"
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
                 EN
               </button>
               <span className="text-muted-foreground">|</span>
               <button
                 onClick={() => setLanguage("pt")}
-                className={`px-2 py-1 rounded transition-colors ${language === "pt" ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"}`}
+                className={`px-2 py-1 rounded transition-colors ${
+                  language === "pt"
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
                 PT
               </button>
             </div>
 
             <a
-              href="https://wa.me/12034173905?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment%20at%20Marriel%20Barber."
+              href={WA_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="gold-gradient text-primary-foreground px-5 py-2.5 rounded-md text-sm font-medium shadow-lg hover:shadow-xl transition-shadow"
@@ -122,16 +156,19 @@ const Index = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <a
-              href="https://wa.me/12034173905?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment%20at%20Marriel%20Barber."
+              href={WA_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="gold-gradient text-primary-foreground px-8 py-4 rounded-md text-base font-medium shadow-lg hover:shadow-xl transition-all"
             >
               {t.hero.bookAppointment}
             </a>
-            <button className="border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 rounded-md text-base font-medium transition-all">
+            <a
+              href="#services"
+              className="border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 rounded-md text-base font-medium transition-all"
+            >
               {t.hero.viewServices}
-            </button>
+            </a>
           </div>
 
           {/* Meta Info */}
@@ -142,7 +179,7 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-primary" />
-              <span>36 Federal Rd, Danbury, CT 06810</span>
+              <span>{ADDRESS}</span>
             </div>
           </div>
         </div>
@@ -183,7 +220,7 @@ const Index = () => {
                   </span>
                 </div>
                 <a
-                  href="https://wa.me/12034173905?text=Hello%2C%20I%27d%20like%20to%20book%20an%20appointment%20at%20Marriel%20Barber."
+                  href={WA_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full border border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground py-2.5 rounded-md text-sm font-medium transition-all block text-center"
@@ -245,16 +282,17 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {t.team.members.map((member, index) => (
               <div
-                key={index}
+                key={`${member.name}-${index}`}
                 className="glass-card rounded-lg overflow-hidden transition-all duration-300 hover:translate-y-[-2px]"
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={teamImages[index]}
+                    src={getTeamImageSrc(member.imageKey, index)}
                     alt={member.name}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
+
                 <div className="p-6">
                   <div className="flex items-center gap-1 mb-3">
                     {[...Array(5)].map((_, i) => (
@@ -264,6 +302,7 @@ const Index = () => {
                       />
                     ))}
                   </div>
+
                   <h3 className="font-serif text-xl font-semibold text-foreground">
                     {member.name}
                   </h3>
@@ -271,6 +310,63 @@ const Index = () => {
                   <p className="text-muted-foreground text-sm">
                     {member.description}
                   </p>
+
+                  {member.badges?.length ? (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {member.badges.map((b) => (
+                        <span
+                          key={b}
+                          className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-foreground/80 ring-1 ring-white/10"
+                        >
+                          {b}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  {member.contact ? (
+                    <div className="mt-4 flex items-center gap-3">
+                      {member.contact.phoneE164 ? (
+                        <a
+                          href={`tel:${member.contact.phoneE164}`}
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10 transition hover:bg-white/15"
+                          aria-label={`Call ${member.name}`}
+                          title={member.contact.phoneDisplay ?? "Call"}
+                        >
+                          <PhoneIcon className="h-5 w-5" />
+                        </a>
+                      ) : null}
+
+                      {member.contact.whatsappE164 ? (
+                        <a
+                          href={`https://wa.me/${member.contact.whatsappE164.replace(
+                            /\D/g,
+                            "",
+                          )}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10 transition hover:bg-white/15"
+                          aria-label={`WhatsApp ${member.name}`}
+                          title="WhatsApp"
+                        >
+                          <WhatsAppIcon className="h-5 w-5" />
+                        </a>
+                      ) : null}
+
+                      {member.contact.instagramUrl ? (
+                        <a
+                          href={member.contact.instagramUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10 transition hover:bg-white/15"
+                          aria-label={`Instagram ${member.name}`}
+                          title="Instagram"
+                        >
+                          <InstagramIcon className="h-5 w-5" />
+                        </a>
+                      ) : null}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             ))}
@@ -310,14 +406,14 @@ const Index = () => {
 
               {/* Address */}
               <a
-                href="https://maps.google.com/?q=36%20Federal%20Rd%2C%20Danbury%2C%20CT%2006810"
+                href={MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 mb-6 group"
               >
                 <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                 <span className="text-foreground group-hover:text-primary transition-colors">
-                  36 Federal Rd, Danbury, CT 06810
+                  {ADDRESS}
                 </span>
               </a>
 
@@ -383,7 +479,7 @@ const Index = () => {
 
               {/* Get Directions Button */}
               <a
-                href="https://maps.google.com/?q=36%20Federal%20Rd%2C%20Danbury%2C%20CT%2006810"
+                href={MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full gold-gradient text-primary-foreground px-6 py-3.5 rounded-md text-base font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
@@ -444,5 +540,29 @@ const Index = () => {
     </div>
   );
 };
+
+function PhoneIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C11.85 21 3 12.15 3 1a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.24 1.01l-2.2 2.2z" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M20.52 3.48A11.86 11.86 0 0 0 12.03 0C5.4 0 .02 5.38.02 12c0 2.11.55 4.17 1.6 5.99L0 24l6.2-1.6a11.95 11.95 0 0 0 5.83 1.49h.01c6.63 0 12.01-5.38 12.01-12 0-3.2-1.25-6.2-3.53-8.41zM12.04 21.8h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.68.95.98-3.59-.24-.37A9.8 9.8 0 0 1 2.2 12c0-5.43 4.41-9.84 9.84-9.84 2.63 0 5.1 1.02 6.96 2.88A9.79 9.79 0 0 1 21.88 12c0 5.43-4.41 9.8-9.84 9.8zm5.7-7.78c-.31-.16-1.82-.9-2.1-1-.28-.1-.49-.16-.7.16-.21.31-.8 1-.98 1.2-.18.21-.36.23-.67.08-.31-.16-1.3-.48-2.48-1.53-.92-.82-1.54-1.84-1.72-2.15-.18-.31-.02-.48.14-.64.14-.14.31-.36.47-.54.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.54-.08-.16-.7-1.7-.96-2.33-.25-.6-.5-.52-.7-.53h-.6c-.21 0-.54.08-.83.39-.29.31-1.09 1.06-1.09 2.58s1.12 2.99 1.28 3.2c.16.21 2.2 3.36 5.34 4.71.75.32 1.33.52 1.79.66.75.24 1.43.21 1.97.13.6-.09 1.82-.74 2.08-1.46.26-.72.26-1.34.18-1.46-.08-.12-.28-.2-.6-.36z" />
+    </svg>
+  );
+}
+
+function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h10zm-5 3.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm0 7.3A2.8 2.8 0 1 1 14.8 12 2.8 2.8 0 0 1 12 14.8zM17.6 6.9a1 1 0 1 0 1 1 1 1 0 0 0-1-1z" />
+    </svg>
+  );
+}
 
 export default Index;

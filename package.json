@@ -1,8 +1,10 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "@framixor/demo-barber",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "Framixor",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
