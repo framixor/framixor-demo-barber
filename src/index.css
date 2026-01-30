@@ -6,8 +6,17 @@
 
 @layer base {
   :root {
-    --background: 20 12% 8%;
-    --foreground: 35 33% 96%;
+    /* Framixor runtime theme tokens (V1) - triplet format (NO-OP baseline) */
+    --fx-bg: 20 12% 8%;
+    --fx-fg: 35 33% 96%;
+    --fx-primary: 43 70% 51%;
+    --fx-primaryFg: 20 12% 8%;
+    --fx-accent: 43 70% 51%;
+    --fx-muted: 20 6% 18%;
+    --fx-border: 20 10% 22%;
+
+    --background: var(--fx-bg);
+    --foreground: var(--fx-fg);
 
     --card: 20 12% 11%;
     --card-foreground: 35 33% 96%;
@@ -21,7 +30,7 @@
     --secondary: 20 8% 20%;
     --secondary-foreground: 35 33% 96%;
 
-    --muted: 20 6% 18%;
+    --muted: var(--fx-muted);
     --muted-foreground: 30 8% 60%;
 
     --accent: 43 70% 51%;
@@ -30,7 +39,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 20 10% 22%;
+    --border: var(--fx-border);
     --input: 20 10% 22%;
     --ring: 43 70% 51%;
 
@@ -51,23 +60,32 @@
   }
 
   .dark {
-    --background: 20 12% 8%;
-    --foreground: 35 33% 96%;
+    /* Keep dark-mode tokens mapped to the runtime theme (V1). */
+    --background: var(--fx-bg);
+    --foreground: var(--fx-fg);
+
     --card: 20 12% 11%;
     --card-foreground: 35 33% 96%;
+
     --popover: 20 12% 11%;
     --popover-foreground: 35 33% 96%;
+
     --primary: 43 70% 51%;
     --primary-foreground: 20 12% 8%;
+
     --secondary: 20 8% 20%;
     --secondary-foreground: 35 33% 96%;
-    --muted: 20 6% 18%;
+
+    --muted: var(--fx-muted);
     --muted-foreground: 30 8% 60%;
+
     --accent: 43 70% 51%;
     --accent-foreground: 20 12% 8%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 20 10% 22%;
+
+    --border: var(--fx-border);
     --input: 20 10% 22%;
     --ring: 43 70% 51%;
   }
