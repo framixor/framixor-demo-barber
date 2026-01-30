@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "tokens": {
+    "bg": "hsl(30 18% 7%)",
+    "fg": "hsl(36 20% 92%)",
+    "primary": "hsl(38 70% 50%)",
+    "primaryFg": "hsl(30 18% 7%)",
+    "accent": "hsl(34 40% 16%)",
+    "muted": "hsl(30 12% 12%)",
+    "border": "hsl(30 10% 20%)"
+  }
+}
