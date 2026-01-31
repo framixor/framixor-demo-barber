@@ -1,12 +1,12 @@
 import { useTheme } from "@/contracts/useTheme";
-import { applyTheme } from "@/lib/applyTheme";
 import { useEffect } from "react";
+import { applyTheme } from "../../lib/applyTheme";
 
 export function ThemeRuntime() {
   const theme = useTheme();
 
   useEffect(() => {
-    applyTheme(theme);
+    applyTheme(theme.tokens);
   }, [theme]);
 
   return null;
