@@ -1,3 +1,4 @@
+import { useBusiness } from "@/contracts/useBusiness";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Clock, Instagram, MapPin, Phone, Scissors, Star } from "lucide-react";
 
@@ -50,6 +51,7 @@ const WA_URL = `https://wa.me/${WA_PHONE_E164}?text=${encodeURIComponent(
 
 const Index = () => {
   const { language, setLanguage, t } = useLanguage();
+  const { business } = useBusiness("marriel");
 
   return (
     <div className="min-h-screen bg-background text-foreground">

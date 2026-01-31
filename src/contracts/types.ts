@@ -84,3 +84,6 @@ export interface ClientBusinessContract {
     ogImage?: string;
   };
 }
+
+// Canonical alias used by runtime hooks/components (V1).
+export type BusinessContract = ClientBusinessContract;
