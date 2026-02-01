@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "primaryStyle": "solid",
+  "tokens": {
+    "bg": "0 0% 100%",
+    "fg": "240 10% 4%",
+    "primary": "330 85% 55%",
+    "primaryFg": "0 0% 100%",
+    "accent": "330 90% 60%",
+    "muted": "240 5% 96%",
+    "border": "240 6% 90%"
+  }
+}

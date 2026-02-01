@@ -13,10 +13,16 @@ export function resolveClientSlug(
   availableClients: readonly string[],
   fallback: string = DEFAULT_CLIENT,
 ): string {
-  const envClient = (import.meta.env.VITE_CLIENT as string | undefined)?.trim();
+  if (availableClients.length === 0) return fallback;
 
-  const chosen =
-    envClient && availableClients.includes(envClient) ? envClient : fallback;
+  const envClientRaw = (
+    import.meta.env.VITE_CLIENT as string | undefined
+  )?.trim();
+  const envClient = envClientRaw?.toLowerCase();
 
-  return chosen;
+  if (envClient && availableClients.includes(envClient)) return envClient;
+
+  if (availableClients.includes(fallback)) return fallback;
+
+  return availableClients[0];
 }

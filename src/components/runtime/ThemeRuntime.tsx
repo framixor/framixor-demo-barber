@@ -5,11 +5,12 @@ import { useEffect } from "react";
 export function ThemeRuntime() {
   const theme = useTheme();
 
+  const tokens = theme.tokens;
+  const primaryStyle = theme.primaryStyle;
+
   useEffect(() => {
-    // Apply theme
-    applyTheme(theme.tokens);
-    document.documentElement.setAttribute("data-theme-applied", "1");
-  }, [theme.version, theme.tokens]);
+    applyTheme(tokens, { primaryStyle });
+  }, [tokens, primaryStyle]);
 
   return null;
 }

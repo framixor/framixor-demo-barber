@@ -1,45 +1,37 @@
-type ThemeTokens = Record<string, string>;
-
-function normalizeHslTriplet(value: string) {
-  const v = value.trim();
-  const m = v.match(/^hsl\(\s*([^)]+)\s*\)$/i);
-  return m ? m[1].trim() : v;
-}
+import type { ThemePrimaryStyle, ThemeTokens } from "@/contracts/types";
 
 /**
- * Apply theme tokens to CSS variables on :root (documentElement).
+ * Apply semantic theme tokens as CSS variables.
  *
- * Canonical: writes to --fx-* (Framixor V1).
- * Values expected: HSL triplets like "210 20% 98%".
+ * Rules:
+ * - tokens are HSL triplets (e.g. "43 70% 51%") to support `hsl(var(--primary))`.
+ * - primaryStyle controls whether the primary CTA is solid or gradient.
+ * - primaryFrom/primaryTo are optional; fallback to `primary`.
  */
-export function applyTheme(tokens: ThemeTokens) {
+export function applyTheme(
+  tokens: ThemeTokens,
+  opts?: { primaryStyle?: ThemePrimaryStyle },
+) {
   const root = document.documentElement;
 
-  const t = Object.fromEntries(
-    Object.entries(tokens).map(([k, v]) => [k, normalizeHslTriplet(String(v))]),
-  );
+  // shadcn-compatible vars (canonical)
+  root.style.setProperty("--background", tokens.bg);
+  root.style.setProperty("--foreground", tokens.fg);
 
-  // 1) Canonical: set Framixor V1 vars
-  for (const [key, value] of Object.entries(t)) {
-    root.style.setProperty(`--fx-${key}`, value);
-  }
+  root.style.setProperty("--primary", tokens.primary);
+  root.style.setProperty("--primary-foreground", tokens.primaryFg);
 
-  // 2) Compatibility (optional but helpful while transitioning)
-  const aliasMap: Record<string, string[]> = {
-    bg: ["background"],
-    fg: ["foreground"],
-    primary: ["primary"],
-    primaryFg: ["primary-foreground"],
-    accent: ["accent"],
-    muted: ["muted"],
-    border: ["border"],
-  };
+  root.style.setProperty("--accent", tokens.accent);
+  root.style.setProperty("--muted", tokens.muted);
+  root.style.setProperty("--border", tokens.border);
 
-  for (const [from, tos] of Object.entries(aliasMap)) {
-    const value = t[from];
-    if (!value) continue;
-    for (const to of tos) {
-      root.style.setProperty(`--${to}`, value);
-    }
-  }
+  // Framixor extensions: primary style + endpoints
+  const style: ThemePrimaryStyle = opts?.primaryStyle ?? "solid";
+  root.setAttribute("data-fx-primary-style", style);
+
+  const from = tokens.primaryFrom ?? tokens.primary;
+  const to = tokens.primaryTo ?? tokens.primary;
+
+  root.style.setProperty("--fx-primary-from", from);
+  root.style.setProperty("--fx-primary-to", to);
 }

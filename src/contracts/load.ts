@@ -23,6 +23,7 @@ import marrielBusiness from "./clients/marriel/business.json";
 // -----------------------------
 // Theme presets (boilerplate-owned)
 // -----------------------------
+import candyPink from "./themes/candy-pink.json";
 import clinicGreen from "./themes/clinic-green.json";
 import forestEmerald from "./themes/forest-emerald.json";
 import petroleumTeal from "./themes/petroleum-teal.json";
@@ -39,10 +40,11 @@ const BUSINESS_BY_CLIENT: Record<ClientSlug, ClientBusinessContract> = {
 };
 
 const THEME_PRESET_BY_KEY: Record<ThemePresetName, ClientThemeContract> = {
-  "premium-gold": premiumGold as ClientThemeContract,
-  "petroleum-teal": petroleumTeal as ClientThemeContract,
-  "forest-emerald": forestEmerald as ClientThemeContract,
+  "premium-gold": premiumGold,
+  "petroleum-teal": petroleumTeal,
+  "forest-emerald": forestEmerald,
   "clinic-green": clinicGreen,
+  "candy-pink": candyPink,
 };
 
 function resolveClientSlug(): ClientSlug {

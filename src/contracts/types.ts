@@ -8,7 +8,8 @@ export type ThemePresetName =
   | "premium-gold"
   | "petroleum-teal"
   | "forest-emerald"
-  | "clinic-green";
+  | "clinic-green"
+  | "candy-pink";
 
 /**
  * Minimal semantic theme tokens (V1).
@@ -17,23 +18,43 @@ export type ThemePresetName =
  * Values are expected to be HSL triplets like: "43 70% 51%"
  * (so Tailwind/shadcn patterns like hsl(var(--primary)) keep working).
  */
-export type ThemeTokenKey =
-  | "bg"
-  | "fg"
-  | "primary"
-  | "primaryFg"
-  | "accent"
-  | "muted"
-  | "border";
+export type ThemePrimaryStyle = "solid" | "gradient";
 
-export type ThemeTokens = Record<ThemeTokenKey, string>;
+/**
+ * Canonical required tokens (V1).
+ * Optional tokens exist only to support a small amount of controlled variation.
+ */
+export type ThemeTokens = {
+  // Required semantic tokens
+  bg: string;
+  fg: string;
+
+  primary: string;
+  primaryFg: string;
+
+  accent: string;
+  muted: string;
+  border: string;
+
+  // Optional: gradient endpoints for primary button when primaryStyle="gradient"
+  // If missing, runtime must fallback to `primary`.
+  primaryFrom?: string;
+  primaryTo?: string;
+};
 
 export interface ClientThemeContract {
   /**
    * Used for debugging/logging and future migrations.
-   * Example: "1.0"
+   * Example: 1
    */
-  version: string;
+  version: number;
+
+  /**
+   * Determines how the primary CTA is rendered.
+   * - solid: background = hsl(var(--primary))
+   * - gradient: background = linear-gradient using primaryFrom/primaryTo (fallback to primary)
+   */
+  primaryStyle?: ThemePrimaryStyle;
 
   /**
    * Semantic tokens only.
