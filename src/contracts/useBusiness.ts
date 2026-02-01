@@ -1,9 +1,7 @@
 import { useMemo } from "react";
-import { getClientBusiness } from "./load";
+import { getActiveBusiness } from "./load";
 import type { BusinessContract } from "./types";
 
-export function useBusiness(client: string): BusinessContract {
-  return useMemo(() => {
-    return getClientBusiness(client);
-  }, [client]);
+export function useBusiness(): BusinessContract {
+  return useMemo(() => getActiveBusiness(), []);
 }

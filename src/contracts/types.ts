@@ -1,8 +1,21 @@
 export type ClientSlug = string;
 
 /**
+ * Theme preset names owned by the boilerplate (V1).
+ * Clients choose one of these (minimal variation rule).
+ */
+export type ThemePresetName =
+  | "premium-gold"
+  | "petroleum-teal"
+  | "forest-emerald"
+  | "clinic-green";
+
+/**
  * Minimal semantic theme tokens (V1).
  * Keep this small. More tokens = more chaos.
+ *
+ * Values are expected to be HSL triplets like: "43 70% 51%"
+ * (so Tailwind/shadcn patterns like hsl(var(--primary)) keep working).
  */
 export type ThemeTokenKey =
   | "bg"
@@ -24,7 +37,7 @@ export interface ClientThemeContract {
 
   /**
    * Semantic tokens only.
-   * Values should be valid CSS color values (recommended: hsl(...) or #hex).
+   * Values should be HSL triplets (recommended).
    */
   tokens: ThemeTokens;
 }
@@ -65,6 +78,12 @@ export interface ClientBusinessContract {
       maps?: string; // google maps url
       booking?: string; // future: movyra or other
     };
+
+    /**
+     * Optional opening hours (V1).
+     * Keeping it flexible: keys are the "labels" you want to show.
+     */
+    hours?: Record<string, string>;
   };
 
   seo: {
@@ -83,6 +102,12 @@ export interface ClientBusinessContract {
      */
     ogImage?: string;
   };
+
+  /**
+   * Client chooses one preset owned by the boilerplate.
+   * This is what ties business.json -> theme preset json.
+   */
+  themePreset: ThemePresetName;
 }
 
 // Canonical alias used by runtime hooks/components (V1).

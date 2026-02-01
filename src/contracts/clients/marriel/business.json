@@ -34,5 +34,6 @@
     "locale": "en",
     "domain": "marrielbarber.com",
     "ogImage": "/og.png"
-  }
+  },
+  "themePreset": "premium-gold"
 }

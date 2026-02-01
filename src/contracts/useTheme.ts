@@ -1,5 +1,7 @@
-import { getClientTheme } from "./load";
+import { getActiveTheme } from "@/contracts/load";
 
 export function useTheme() {
-  return getClientTheme("marriel");
+  const theme = getActiveTheme();
+
+  return theme;
 }

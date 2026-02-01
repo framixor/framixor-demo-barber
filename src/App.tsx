@@ -8,12 +8,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
+import { ThemeRuntime } from "@/components/runtime/ThemeRuntime";
 import { useBusiness } from "./contracts/useBusiness";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const business = useBusiness("marriel");
+  const business = useBusiness();
 
   useEffect(() => {
     // Title
@@ -33,6 +34,8 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <ThemeRuntime />
+
         <Toaster />
         <Sonner />
         <BrowserRouter>

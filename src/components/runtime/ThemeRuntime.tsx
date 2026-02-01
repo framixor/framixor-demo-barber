@@ -1,13 +1,15 @@
 import { useTheme } from "@/contracts/useTheme";
+import { applyTheme } from "@/lib/applyTheme";
 import { useEffect } from "react";
-import { applyTheme } from "../../lib/applyTheme";
 
 export function ThemeRuntime() {
   const theme = useTheme();
 
   useEffect(() => {
+    // Apply theme
     applyTheme(theme.tokens);
-  }, [theme]);
+    document.documentElement.setAttribute("data-theme-applied", "1");
+  }, [theme.version, theme.tokens]);
 
   return null;
 }
