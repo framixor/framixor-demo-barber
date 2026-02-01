@@ -164,7 +164,7 @@ const Index = () => {
               href={waHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="gold-gradient text-primary-foreground px-5 py-2.5 rounded-md text-sm font-medium shadow-lg hover:shadow-xl transition-shadow"
+              className="fx-btn-primary px-5 py-2.5 rounded-md text-sm font-medium shadow-lg hover:shadow-xl transition-shadow"
             >
               {t.nav.bookNow}
             </a>
