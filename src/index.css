@@ -6,8 +6,18 @@
 
 @layer base {
   :root {
-    --background: 20 12% 8%;
-    --foreground: 35 33% 96%;
+    /* Framixor runtime theme tokens (V1) - canonical triplets */
+    --fx-bg: 20 12% 8%;
+    --fx-fg: 35 33% 96%;
+    --fx-primary: 43 70% 51%;
+    --fx-primaryFg: 20 12% 8%;
+    --fx-accent: 43 70% 51%;
+    --fx-muted: 20 6% 18%;
+    --fx-border: 20 10% 22%;
+
+    /* shadcn tokens derived from fx tokens */
+    --background: var(--fx-bg);
+    --foreground: var(--fx-fg);
 
     --card: 20 12% 11%;
     --card-foreground: 35 33% 96%;
@@ -15,61 +25,78 @@
     --popover: 20 12% 11%;
     --popover-foreground: 35 33% 96%;
 
-    --primary: 43 70% 51%;
-    --primary-foreground: 20 12% 8%;
+    --primary: var(--fx-primary);
+    --primary-foreground: var(--fx-primaryFg);
 
     --secondary: 20 8% 20%;
     --secondary-foreground: 35 33% 96%;
 
-    --muted: 20 6% 18%;
+    --muted: var(--fx-muted);
     --muted-foreground: 30 8% 60%;
 
-    --accent: 43 70% 51%;
-    --accent-foreground: 20 12% 8%;
+    --accent: var(--fx-accent);
+    --accent-foreground: var(--fx-primaryFg); /* V1: reuse primaryFg */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 20 10% 22%;
+    --border: var(--fx-border);
     --input: 20 10% 22%;
-    --ring: 43 70% 51%;
+    --ring: var(--fx-primary);
 
     --radius: 0.5rem;
 
-    --gold: 43 70% 51%;
+    /* Demo-Barber custom tokens derived from fx */
+    /* FIX: --fx-gold did not exist; derive gold from primary */
+    --gold: var(--primary);
+
+    /* Keep these as fixed “design” choices for the template */
     --gold-light: 47 75% 60%;
     --gold-dark: 40 65% 42%;
 
-    --sidebar-background: 20 12% 8%;
-    --sidebar-foreground: 35 33% 96%;
-    --sidebar-primary: 43 70% 51%;
-    --sidebar-primary-foreground: 20 12% 8%;
+    /* Sidebar tokens (if used by ui lib) */
+    --sidebar-background: var(--fx-bg);
+    --sidebar-foreground: var(--fx-fg);
+    --sidebar-primary: var(--fx-primary);
+    --sidebar-primary-foreground: var(--fx-primaryFg);
     --sidebar-accent: 20 8% 20%;
-    --sidebar-accent-foreground: 35 33% 96%;
-    --sidebar-border: 20 10% 22%;
-    --sidebar-ring: 43 70% 51%;
+    --sidebar-accent-foreground: var(--fx-fg);
+    --sidebar-border: var(--fx-border);
+    --sidebar-ring: var(--fx-primary);
   }
 
   .dark {
-    --background: 20 12% 8%;
-    --foreground: 35 33% 96%;
+    /* Keep dark-mode tokens mapped to the runtime theme (V1). */
+    --background: var(--fx-bg);
+    --foreground: var(--fx-fg);
+
     --card: 20 12% 11%;
     --card-foreground: 35 33% 96%;
+
     --popover: 20 12% 11%;
     --popover-foreground: 35 33% 96%;
-    --primary: 43 70% 51%;
-    --primary-foreground: 20 12% 8%;
+
+    --primary: var(--fx-primary);
+    --primary-foreground: var(--fx-primaryFg);
+
     --secondary: 20 8% 20%;
     --secondary-foreground: 35 33% 96%;
-    --muted: 20 6% 18%;
+
+    --muted: var(--fx-muted);
     --muted-foreground: 30 8% 60%;
-    --accent: 43 70% 51%;
-    --accent-foreground: 20 12% 8%;
+
+    --accent: var(--fx-accent);
+    --accent-foreground: var(--fx-primaryFg);
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 20 10% 22%;
+
+    --border: var(--fx-border);
     --input: 20 10% 22%;
-    --ring: 43 70% 51%;
+    --ring: var(--fx-primary);
+
+    /* Keep gold consistent in dark mode too */
+    --gold: var(--primary);
   }
 }
 
@@ -97,18 +124,18 @@
   .gold-gradient {
     background: linear-gradient(
       135deg,
-      hsl(43 70% 51%) 0%,
-      hsl(47 75% 60%) 50%,
-      hsl(43 70% 51%) 100%
+      hsl(var(--gold)) 0%,
+      hsl(var(--gold-light)) 50%,
+      hsl(var(--gold)) 100%
     );
   }
 
   .gold-text-gradient {
     background: linear-gradient(
       135deg,
-      hsl(43 70% 51%) 0%,
-      hsl(47 75% 60%) 50%,
-      hsl(43 70% 51%) 100%
+      hsl(var(--gold)) 0%,
+      hsl(var(--gold-light)) 50%,
+      hsl(var(--gold)) 100%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -118,7 +145,7 @@
   .glass-card {
     background: hsla(20, 12%, 11%, 0.8);
     backdrop-filter: blur(12px);
-    border: 1px solid hsl(20 10% 22%);
+    border: 1px solid hsl(var(--border));
   }
 
   .glass-card:hover {

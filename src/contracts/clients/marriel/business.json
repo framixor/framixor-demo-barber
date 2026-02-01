@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "business": {
+    "legalName": "Marriel Barber",
+    "displayName": "Marriel Barber",
+    "tagline": "Barbershop",
+    "address": {
+      "line1": "36 Federal Rd",
+      "city": "Danbury",
+      "region": "CT",
+      "postalCode": "06810",
+      "country": "US"
+    },
+    "contact": {
+      "phone": "(203) 417-3905",
+      "whatsapp": "12034173905",
+      "instagram": "marriel_barber"
+    },
+    "links": {
+      "website": "https://marrielbarber.com",
+      "maps": "",
+      "booking": ""
+    },
+    "hours": {
+      "mon-thu": "10:00 AM – 8:30 PM",
+      "fri": "9:00 AM – 9:00 PM",
+      "sat": "8:00 AM – 8:00 PM",
+      "sun": "9:00 AM – 2:00 PM"
+    }
+  },
+  "seo": {
+    "title": "Marriel Barber | Barbershop in Danbury, CT",
+    "description": "Marriel Barber is a premium barbershop in Danbury, CT, offering classic cuts, clean fades, and modern style. Visit us on Federal Rd.",
+    "locale": "en",
+    "domain": "marrielbarber.com",
+    "ogImage": "/og.png"
+  },
+  "themePreset": "premium-gold"
+}

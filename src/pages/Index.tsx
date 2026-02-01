@@ -1,3 +1,4 @@
+import { useBusiness } from "@/contracts/useBusiness";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Clock, Instagram, MapPin, Phone, Scissors, Star } from "lucide-react";
 
@@ -38,18 +39,61 @@ function getTeamImageSrc(imageKey: unknown, index: number) {
   return teamImages[index];
 }
 
-const ADDRESS = "36 Federal Rd, Danbury, CT 06810";
-const MAPS_URL =
-  "https://maps.google.com/?q=36%20Federal%20Rd%2C%20Danbury%2C%20CT%2006810";
-
-const WA_PHONE_E164 = "12034173905";
-const WA_MESSAGE = "Hello, I'd like to book an appointment at Marriel Barber.";
-const WA_URL = `https://wa.me/${WA_PHONE_E164}?text=${encodeURIComponent(
-  WA_MESSAGE,
-)}`;
-
 const Index = () => {
   const { language, setLanguage, t } = useLanguage();
+
+  // Hooks must be inside component
+  const contract = useBusiness();
+  const business = contract.business;
+
+  // --- View model (contract-driven) ---
+  // Keep layout unchanged; only values come from business contract with safe fallbacks.
+  const brandName =
+    business.displayName || business.legalName || "Marriel Barber";
+
+  const address = business.address;
+
+  const addressText =
+    address?.city && address?.region
+      ? [
+          address?.line1,
+          address?.line2,
+          `${address.city}, ${address.region}${
+            address.postalCode ? ` ${address.postalCode}` : ""
+          }`,
+          address.country,
+        ]
+          .filter(Boolean)
+          .join(", ")
+      : "36 Federal Rd, Danbury, CT 06810";
+
+  const mapsUrl =
+    business.links?.maps ||
+    `https://maps.google.com/?q=${encodeURIComponent(addressText)}`;
+
+  const phoneDisplay = business.contact?.phone || "(203) 417-3905";
+  const phoneDigits = phoneDisplay.replace(/\D/g, "");
+  const phoneHref = phoneDigits ? `tel:+${phoneDigits}` : "tel:+12034173905";
+
+  const igRaw = business.contact?.instagram || "marriel_barber";
+  const igUrl = igRaw.includes("instagram.com")
+    ? igRaw
+    : `https://instagram.com/${igRaw.replace(/^@/, "")}`;
+  const igHandle = igRaw.includes("instagram.com")
+    ? `@${igRaw.split("instagram.com/")[1]?.replace(/\/.*/, "") ?? "instagram"}`
+    : igRaw.startsWith("@")
+      ? igRaw
+      : `@${igRaw}`;
+
+  const waRaw =
+    business.contact?.whatsapp || business.contact?.phone || "12034173905";
+  const waDigits = waRaw.replace(/\D/g, "");
+  const waMessage = `Hello, I'd like to book an appointment at ${brandName}.`;
+  const waHref = waDigits
+    ? `https://wa.me/${waDigits}?text=${encodeURIComponent(waMessage)}`
+    : `https://wa.me/12034173905?text=${encodeURIComponent(
+        "Hello, I'd like to book an appointment at Marriel Barber.",
+      )}`;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -59,7 +103,7 @@ const Index = () => {
           <div className="flex items-center gap-2">
             <Scissors className="w-6 h-6 text-primary" />
             <span className="font-serif text-xl font-semibold text-foreground">
-              Marriel
+              {brandName}
             </span>
           </div>
 
@@ -117,7 +161,7 @@ const Index = () => {
             </div>
 
             <a
-              href={WA_URL}
+              href={waHref}
               target="_blank"
               rel="noopener noreferrer"
               className="gold-gradient text-primary-foreground px-5 py-2.5 rounded-md text-sm font-medium shadow-lg hover:shadow-xl transition-shadow"
@@ -156,7 +200,7 @@ const Index = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <a
-              href={WA_URL}
+              href={waHref}
               target="_blank"
               rel="noopener noreferrer"
               className="gold-gradient text-primary-foreground px-8 py-4 rounded-md text-base font-medium shadow-lg hover:shadow-xl transition-all"
@@ -179,7 +223,7 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-primary" />
-              <span>{ADDRESS}</span>
+              <span>{addressText}</span>
             </div>
           </div>
         </div>
@@ -220,7 +264,7 @@ const Index = () => {
                   </span>
                 </div>
                 <a
-                  href={WA_URL}
+                  href={waHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full border border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground py-2.5 rounded-md text-sm font-medium transition-all block text-center"
@@ -398,7 +442,7 @@ const Index = () => {
                 </div>
                 <div>
                   <h3 className="font-serif text-xl font-semibold text-foreground">
-                    Marriel Barber
+                    {brandName}
                   </h3>
                   <p className="text-muted-foreground text-sm">Barbershop</p>
                 </div>
@@ -406,14 +450,14 @@ const Index = () => {
 
               {/* Address */}
               <a
-                href={MAPS_URL}
+                href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 mb-6 group"
               >
                 <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                 <span className="text-foreground group-hover:text-primary transition-colors">
-                  {ADDRESS}
+                  {addressText}
                 </span>
               </a>
 
@@ -455,31 +499,31 @@ const Index = () => {
 
               {/* Phone */}
               <a
-                href="tel:+12034173905"
+                href={phoneHref}
                 className="flex items-center gap-3 mb-6 group"
               >
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
                 <span className="text-foreground group-hover:text-primary transition-colors">
-                  (203) 417-3905
+                  {phoneDisplay}
                 </span>
               </a>
 
               {/* Instagram */}
               <a
-                href="https://instagram.com/marriel_barber"
+                href={igUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 mb-8 group"
               >
                 <Instagram className="w-5 h-5 text-primary flex-shrink-0" />
                 <span className="text-foreground group-hover:text-primary transition-colors">
-                  @marriel_barber
+                  {igHandle}
                 </span>
               </a>
 
               {/* Get Directions Button */}
               <a
-                href={MAPS_URL}
+                href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full gold-gradient text-primary-foreground px-6 py-3.5 rounded-md text-base font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
@@ -503,7 +547,7 @@ const Index = () => {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Marriel Barber Location"
+                title={`${brandName} Location`}
                 className="w-full h-full min-h-[400px] lg:min-h-[500px]"
               />
             </div>
@@ -518,7 +562,7 @@ const Index = () => {
             <div className="flex items-center gap-2">
               <Scissors className="w-5 h-5 text-primary" />
               <span className="font-serif text-lg font-semibold text-foreground">
-                Marriel
+                {brandName}
               </span>
             </div>
             <p className="text-muted-foreground text-sm">{t.footer.rights}</p>
@@ -560,7 +604,7 @@ function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
 function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-      <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h10zm-5 3.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm0 7.3A2.8 2.8 0 1 1 14.8 12 2.8 2.8 0 0 1 12 14.8zM17.6 6.9a1 1 0 1 0 1 1 1 1 0 0 0-1-1z" />
+      <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h10zm-5 3.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm0 7.3A2.8 2.8 0 1 1 14.8 12 2.8 2.8 0 0 0 12 14.8zM17.6 6.9a1 1 0 1 0 1 1 1 1 0 0 0-1-1z" />
     </svg>
   );
 }
