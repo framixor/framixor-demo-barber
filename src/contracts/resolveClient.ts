@@ -15,7 +15,9 @@ export function resolveClientSlug(
 ): string {
   if (availableClients.length === 0) return fallback;
 
-  const envClientRaw = (import.meta.env.VITE_CLIENT as string | undefined)?.trim();
+  const envClientRaw = (
+    import.meta.env.VITE_CLIENT as string | undefined
+  )?.trim();
   const envClient = envClientRaw?.toLowerCase();
 
   if (envClient && availableClients.includes(envClient)) return envClient;
