@@ -152,3 +152,28 @@
     border-color: hsla(43, 70%, 51%, 0.4);
   }
 }
+
+/* -------------------------------------------------------
+   Framixor semantic primary button (contract-driven)
+   - Default: solid primary
+   - If html[data-fx-primary-style="gradient"]: gradient using endpoints
+-------------------------------------------------------- */
+
+:root {
+  --fx-primary-from: var(--primary);
+  --fx-primary-to: var(--primary);
+}
+
+.fx-btn-primary {
+  color: hsl(var(--primary-foreground));
+  background: hsl(var(--primary));
+}
+
+html[data-fx-primary-style="gradient"] .fx-btn-primary {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--fx-primary-from)),
+    hsl(var(--fx-primary-to))
+  );
+}
+
