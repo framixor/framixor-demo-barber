@@ -124,18 +124,16 @@
   .gold-gradient {
     background: linear-gradient(
       135deg,
-      hsl(var(--gold)) 0%,
-      hsl(var(--gold-light)) 50%,
-      hsl(var(--gold)) 100%
+      hsl(var(--fx-primary-from)),
+      hsl(var(--fx-primary-to))
     );
   }
 
   .gold-text-gradient {
     background: linear-gradient(
       135deg,
-      hsl(var(--gold)) 0%,
-      hsl(var(--gold-light)) 50%,
-      hsl(var(--gold)) 100%
+      hsl(var(--fx-primary-from)),
+      hsl(var(--fx-primary-to))
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

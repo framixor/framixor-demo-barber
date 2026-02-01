@@ -93,9 +93,9 @@ export const translations = {
     },
     // Hero
     hero: {
-      title: "Marriel",
-      titleAccent: "Barber",
-      titleEnd: "Shop",
+      title: "",
+      titleAccent: "Marriel",
+      titleEnd: "Barber Shop",
       subtitle:
         "Where tradition meets modern craftsmanship. Experience the art of premium grooming in an atmosphere of refined elegance.",
       bookAppointment: "Book Appointment",
