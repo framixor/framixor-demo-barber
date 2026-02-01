@@ -1,11 +1,15 @@
 {
-  "version": "1.0",
+  "version": 1,
+  "primaryStyle": "gradient",
   "tokens": {
     "bg": "20 12% 8%",
     "fg": "35 33% 96%",
 
     "primary": "43 70% 51%",
     "primaryFg": "20 12% 8%",
+
+    "primaryFrom": "43 70% 56%",
+    "primaryTo": "33 85% 45%",
 
     "accent": "43 70% 51%",
     "muted": "20 6% 18%",
