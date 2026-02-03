@@ -1,43 +1,7 @@
+import { clientAsset, getPortfolioImages, getTeamImages } from "@/clients/assets";
 import { useBusiness } from "@/contracts/useBusiness";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Clock, Instagram, MapPin, Phone, Scissors, Star } from "lucide-react";
-
-// Image imports
-import heroBg from "@/assets/hero-barbershop.jpg";
-import portfolio1 from "@/assets/portfolio-1.jpg";
-import portfolio2 from "@/assets/portfolio-2.jpg";
-import portfolio3 from "@/assets/portfolio-3.jpg";
-import portfolio4 from "@/assets/portfolio-4.jpg";
-import portfolio5 from "@/assets/portfolio-5.jpg";
-import portfolio6 from "@/assets/portfolio-6.jpg";
-import team1 from "@/assets/team-1.png";
-import team2 from "@/assets/team-2.jpg";
-
-const portfolioImages = [
-  portfolio1,
-  portfolio2,
-  portfolio3,
-  portfolio4,
-  portfolio5,
-  portfolio6,
-];
-
-const teamImages = [team1, team2];
-
-const teamImageByKey = {
-  marriel: teamImages[0],
-  barber2: teamImages[1],
-} as const;
-
-type TeamImageKey = keyof typeof teamImageByKey;
-
-function getTeamImageSrc(imageKey: unknown, index: number) {
-  if (typeof imageKey === "string") {
-    const key = imageKey as TeamImageKey;
-    return teamImageByKey[key] ?? teamImages[index];
-  }
-  return teamImages[index];
-}
 
 const Index = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -46,10 +10,12 @@ const Index = () => {
   const contract = useBusiness();
   const business = contract.business;
 
+  const portfolioImages = getPortfolioImages(6);
+  const teamImages = getTeamImages();
+
   // --- View model (contract-driven) ---
   // Keep layout unchanged; only values come from business contract with safe fallbacks.
-  const brandName =
-    business.displayName || business.legalName || "Marriel Barber";
+  const brandName = business.displayName || business.legalName || "Marriel Barber";
 
   const address = business.address;
 
@@ -80,7 +46,9 @@ const Index = () => {
     ? igRaw
     : `https://instagram.com/${igRaw.replace(/^@/, "")}`;
   const igHandle = igRaw.includes("instagram.com")
-    ? `@${igRaw.split("instagram.com/")[1]?.replace(/\/.*/, "") ?? "instagram"}`
+    ? `@${
+        igRaw.split("instagram.com/")[1]?.replace(/\/.*/, "") ?? "instagram"
+      }`
     : igRaw.startsWith("@")
       ? igRaw
       : `@${igRaw}`;
@@ -94,6 +62,11 @@ const Index = () => {
     : `https://wa.me/12034173905?text=${encodeURIComponent(
         "Hello, I'd like to book an appointment at Marriel Barber.",
       )}`;
+
+  type T = typeof t;
+
+  const services: T["services"]["items"] = t.services.items ?? [];
+  const teamMembers: T["team"]["members"] = t.team.members ?? [];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -176,7 +149,7 @@ const Index = () => {
       <section className="relative min-h-screen flex items-center justify-center">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroBg})` }}
+          style={{ backgroundImage: `url(${clientAsset("hero.jpg")})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background" />
 
@@ -244,7 +217,7 @@ const Index = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {t.services.items.map((service, index) => (
+            {services.map((service, index) => (
               <div
                 key={index}
                 className="glass-card rounded-lg p-6 transition-all duration-300 hover:translate-y-[-2px]"
@@ -324,22 +297,22 @@ const Index = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {t.team.members.map((member, index) => (
+            {teamMembers.map((member, index) => (
               <div
-                key={`${member.name}-${index}`}
+                key={`${member?.name ?? "member"}-${index}`}
                 className="glass-card rounded-lg overflow-hidden transition-all duration-300 hover:translate-y-[-2px]"
               >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img
-                    src={getTeamImageSrc(member.imageKey, index)}
-                    alt={member.name}
+                    src={teamImages[index] ?? teamImages[0]}
+                    alt={member?.name ?? "Team member"}
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
 
                 <div className="p-6">
                   <div className="flex items-center gap-1 mb-3">
-                    {[...Array(5)].map((_, i) => (
+                    {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}
                         className="w-4 h-4 fill-primary text-primary"
@@ -348,16 +321,16 @@ const Index = () => {
                   </div>
 
                   <h3 className="font-serif text-xl font-semibold text-foreground">
-                    {member.name}
+                    {member?.name}
                   </h3>
-                  <p className="text-primary text-sm mb-2">{member.role}</p>
+                  <p className="text-primary text-sm mb-2">{member?.role}</p>
                   <p className="text-muted-foreground text-sm">
-                    {member.description}
+                    {member?.description}
                   </p>
 
-                  {member.badges?.length ? (
+                  {Array.isArray(member?.badges) && member.badges.length > 0 ? (
                     <div className="mt-4 flex flex-wrap gap-2">
-                      {member.badges.map((b) => (
+                      {member.badges.map((b: string) => (
                         <span
                           key={b}
                           className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-foreground/80 ring-1 ring-white/10"
@@ -368,13 +341,13 @@ const Index = () => {
                     </div>
                   ) : null}
 
-                  {member.contact ? (
+                  {member?.contact ? (
                     <div className="mt-4 flex items-center gap-3">
                       {member.contact.phoneE164 ? (
                         <a
                           href={`tel:${member.contact.phoneE164}`}
                           className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10 transition hover:bg-white/15"
-                          aria-label={`Call ${member.name}`}
+                          aria-label={`Call ${member?.name ?? "team member"}`}
                           title={member.contact.phoneDisplay ?? "Call"}
                         >
                           <PhoneIcon className="h-5 w-5" />
@@ -383,14 +356,13 @@ const Index = () => {
 
                       {member.contact.whatsappE164 ? (
                         <a
-                          href={`https://wa.me/${member.contact.whatsappE164.replace(
-                            /\D/g,
-                            "",
-                          )}`}
+                          href={`https://wa.me/${String(
+                            member.contact.whatsappE164,
+                          ).replace(/\D/g, "")}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10 transition hover:bg-white/15"
-                          aria-label={`WhatsApp ${member.name}`}
+                          aria-label={`WhatsApp ${member?.name ?? "team member"}`}
                           title="WhatsApp"
                         >
                           <WhatsAppIcon className="h-5 w-5" />
@@ -403,7 +375,7 @@ const Index = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/10 transition hover:bg-white/15"
-                          aria-label={`Instagram ${member.name}`}
+                          aria-label={`Instagram ${member?.name ?? "team member"}`}
                           title="Instagram"
                         >
                           <InstagramIcon className="h-5 w-5" />
@@ -477,31 +449,22 @@ const Index = () => {
                     <span className="text-foreground">10:00 AM – 8:30 PM</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      {t.visit.days.fri}
-                    </span>
+                    <span className="text-muted-foreground">{t.visit.days.fri}</span>
                     <span className="text-foreground">9:00 AM – 9:00 PM</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      {t.visit.days.sat}
-                    </span>
+                    <span className="text-muted-foreground">{t.visit.days.sat}</span>
                     <span className="text-foreground">8:00 AM – 8:00 PM</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">
-                      {t.visit.days.sun}
-                    </span>
+                    <span className="text-muted-foreground">{t.visit.days.sun}</span>
                     <span className="text-foreground">9:00 AM – 2:00 PM</span>
                   </div>
                 </div>
               </div>
 
               {/* Phone */}
-              <a
-                href={phoneHref}
-                className="flex items-center gap-3 mb-6 group"
-              >
+              <a href={phoneHref} className="flex items-center gap-3 mb-6 group">
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
                 <span className="text-foreground group-hover:text-primary transition-colors">
                   {phoneDisplay}
@@ -596,7 +559,7 @@ function PhoneIcon(props: React.SVGProps<SVGSVGElement>) {
 function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-      <path d="M20.52 3.48A11.86 11.86 0 0 0 12.03 0C5.4 0 .02 5.38.02 12c0 2.11.55 4.17 1.6 5.99L0 24l6.2-1.6a11.95 11.95 0 0 0 5.83 1.49h.01c6.63 0 12.01-5.38 12.01-12 0-3.2-1.25-6.2-3.53-8.41zM12.04 21.8h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.68.95.98-3.59-.24-.37A9.8 9.8 0 0 1 2.2 12c0-5.43 4.41-9.84 9.84-9.84 2.63 0 5.1 1.02 6.96 2.88A9.79 9.79 0 0 1 21.88 12c0 5.43-4.41 9.8-9.84 9.8zm5.7-7.78c-.31-.16-1.82-.9-2.1-1-.28-.1-.49-.16-.7.16-.21.31-.8 1-.98 1.2-.18.21-.36.23-.67.08-.31-.16-1.3-.48-2.48-1.53-.92-.82-1.54-1.84-1.72-2.15-.18-.31-.02-.48.14-.64.14-.14.31-.36.47-.54.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.54-.08-.16-.7-1.7-.96-2.33-.25-.6-.5-.52-.7-.53h-.6c-.21 0-.54.08-.83.39-.29.31-1.09 1.06-1.09 2.58s1.12 2.99 1.28 3.2c.16.21 2.2 3.36 5.34 4.71.75.32 1.33.52 1.79.66.75.24 1.43.21 1.97.13.6-.09 1.82-.74 2.08-1.46.26-.72.26-1.34.18-1.46-.08-.12-.28-.2-.6-.36z" />
+      <path d="M20.52 3.48A11.86 11.86 0 0 0 12.03 0C5.4 0 .02 5.38.02 12c0 2.11.55 4.17 1.6 5.99L0 24l6.2-1.6a11.95 11.95 0 0 0 5.83 1.49h.01c6.63 0 12.01-5.38 12.01-12 0-3.2-1.25-6.2-3.53-8.41zM12.04 21.8h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.68.95.98-3.59-.24-.37A9.8 9.8 0 0 1 2.2 12c0-5.43 4.41-9.84 9.84-9.84 2.63 0 5.1 1.02 6.96 2.88A9.79 9.79 0 0 1 21.88 12c0 5.43-4.41 9.8-9.84 9.8z" />
     </svg>
   );
 }

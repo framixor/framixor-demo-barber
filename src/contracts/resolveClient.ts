@@ -1,28 +1,19 @@
-const DEFAULT_CLIENT = "marriel";
+import { listClients } from "./load";
+import type { ClientSlug } from "./types";
 
-/**
- * Resolve the active client slug.
- *
- * Design principles:
- * - This file is PURE and dumb.
- * - It does NOT know about BUSINESS_BY_CLIENT or THEME_BY_CLIENT.
- * - The caller provides the list of available client slugs.
- * - Fail-closed: always return a valid, wired client.
- */
-export function resolveClientSlug(
-  availableClients: readonly string[],
-  fallback: string = DEFAULT_CLIENT,
-): string {
-  if (availableClients.length === 0) return fallback;
+export function resolveClientSlug(fallback: ClientSlug = "marriel" as ClientSlug) {
+  const raw = import.meta.env.VITE_CLIENT;
+  const candidate = typeof raw === "string" ? raw.trim() : "";
 
-  const envClientRaw = (
-    import.meta.env.VITE_CLIENT as string | undefined
-  )?.trim();
-  const envClient = envClientRaw?.toLowerCase();
+  // listClients() must always be safe; but we harden here anyway.
+  const availableClients = listClients?.() ?? [];
 
-  if (envClient && availableClients.includes(envClient)) return envClient;
+  if (!Array.isArray(availableClients) || availableClients.length === 0) {
+    return fallback;
+  }
 
-  if (availableClients.includes(fallback)) return fallback;
+  if (!candidate) return fallback;
 
-  return availableClients[0];
+  // Accept only known slugs
+  return (availableClients as string[]).includes(candidate) ? (candidate as ClientSlug) : fallback;
 }
