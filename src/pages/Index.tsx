@@ -1,4 +1,4 @@
-import { clientAsset, getPortfolioImages, getTeamImages } from "@/clients/assets";
+import { getHeroImage, getPortfolioImages, getTeamImages } from "@/clients/assets";
 import { useBusiness } from "@/contracts/useBusiness";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Clock, Instagram, MapPin, Phone, Scissors, Star } from "lucide-react";
@@ -149,7 +149,8 @@ const Index = () => {
       <section className="relative min-h-screen flex items-center justify-center">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${clientAsset("hero.jpg")})` }}
+          style={{ backgroundImage: `url(${getHeroImage()})` }}
+
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background" />
 
