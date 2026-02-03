@@ -1,7 +1,9 @@
 import { listClients } from "./load";
 import type { ClientSlug } from "./types";
 
-export function resolveClientSlug(fallback: ClientSlug = "marriel" as ClientSlug) {
+export function resolveClientSlug(
+  fallback: ClientSlug = "marriel" as ClientSlug,
+) {
   const raw = import.meta.env.VITE_CLIENT;
   const candidate = typeof raw === "string" ? raw.trim() : "";
 
@@ -15,5 +17,7 @@ export function resolveClientSlug(fallback: ClientSlug = "marriel" as ClientSlug
   if (!candidate) return fallback;
 
   // Accept only known slugs
-  return (availableClients as string[]).includes(candidate) ? (candidate as ClientSlug) : fallback;
+  return (availableClients as string[]).includes(candidate)
+    ? (candidate as ClientSlug)
+    : fallback;
 }

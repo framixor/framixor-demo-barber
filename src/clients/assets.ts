@@ -15,7 +15,10 @@ import { getActiveClientSlug } from "@/contracts";
 
 export type ClientAssetPath = string;
 
-export function clientAsset(path: string, clientSlug?: string): ClientAssetPath {
+export function clientAsset(
+  path: string,
+  clientSlug?: string,
+): ClientAssetPath {
   const slug = (clientSlug ?? getActiveClientSlug()).trim();
   const safePath = path.replace(/^\/+/, ""); // prevent "//"
   return `/clients/${slug}/assets/${safePath}`;

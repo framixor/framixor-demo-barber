@@ -1,4 +1,8 @@
-import { getHeroImage, getPortfolioImages, getTeamImages } from "@/clients/assets";
+import {
+  getHeroImage,
+  getPortfolioImages,
+  getTeamImages,
+} from "@/clients/assets";
 import { useBusiness } from "@/contracts/useBusiness";
 import { useLanguage } from "@/hooks/useLanguage";
 import { Clock, Instagram, MapPin, Phone, Scissors, Star } from "lucide-react";
@@ -15,7 +19,8 @@ const Index = () => {
 
   // --- View model (contract-driven) ---
   // Keep layout unchanged; only values come from business contract with safe fallbacks.
-  const brandName = business.displayName || business.legalName || "Marriel Barber";
+  const brandName =
+    business.displayName || business.legalName || "Marriel Barber";
 
   const address = business.address;
 
@@ -46,9 +51,7 @@ const Index = () => {
     ? igRaw
     : `https://instagram.com/${igRaw.replace(/^@/, "")}`;
   const igHandle = igRaw.includes("instagram.com")
-    ? `@${
-        igRaw.split("instagram.com/")[1]?.replace(/\/.*/, "") ?? "instagram"
-      }`
+    ? `@${igRaw.split("instagram.com/")[1]?.replace(/\/.*/, "") ?? "instagram"}`
     : igRaw.startsWith("@")
       ? igRaw
       : `@${igRaw}`;
@@ -150,7 +153,6 @@ const Index = () => {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${getHeroImage()})` }}
-
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background" />
 
@@ -450,22 +452,31 @@ const Index = () => {
                     <span className="text-foreground">10:00 AM – 8:30 PM</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t.visit.days.fri}</span>
+                    <span className="text-muted-foreground">
+                      {t.visit.days.fri}
+                    </span>
                     <span className="text-foreground">9:00 AM – 9:00 PM</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t.visit.days.sat}</span>
+                    <span className="text-muted-foreground">
+                      {t.visit.days.sat}
+                    </span>
                     <span className="text-foreground">8:00 AM – 8:00 PM</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t.visit.days.sun}</span>
+                    <span className="text-muted-foreground">
+                      {t.visit.days.sun}
+                    </span>
                     <span className="text-foreground">9:00 AM – 2:00 PM</span>
                   </div>
                 </div>
               </div>
 
               {/* Phone */}
-              <a href={phoneHref} className="flex items-center gap-3 mb-6 group">
+              <a
+                href={phoneHref}
+                className="flex items-center gap-3 mb-6 group"
+              >
                 <Phone className="w-5 h-5 text-primary flex-shrink-0" />
                 <span className="text-foreground group-hover:text-primary transition-colors">
                   {phoneDisplay}
