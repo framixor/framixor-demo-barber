@@ -33,7 +33,7 @@
     "description": "Marriel Barber is a premium barbershop in Danbury, CT, offering classic cuts, clean fades, and modern style. Visit us on Federal Rd.",
     "locale": "en",
     "domain": "marrielbarber.com",
-    "ogImage": "/og.png"
+    "ogImage": "/clients/marriel/assets/og.png"
   },
   "themePreset": "premium-gold"
 }

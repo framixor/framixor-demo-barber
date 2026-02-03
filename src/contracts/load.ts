@@ -5,6 +5,8 @@ import type {
   ThemePresetName,
 } from "./types";
 
+import { resolveClientSlug as resolveClientSlugPure } from "./resolveClient";
+
 /**
  * V1: file-based contracts.
  * Later you can swap this loader to fetch remote JSON, but the call sites don't change.
@@ -46,14 +48,6 @@ const THEME_PRESET_BY_KEY: Record<ThemePresetName, ClientThemeContract> = {
   "clinic-green": clinicGreen,
   "candy-pink": candyPink,
 };
-
-function resolveClientSlug(): ClientSlug {
-  const raw = import.meta.env.VITE_CLIENT?.trim();
-  if (raw && raw in BUSINESS_BY_CLIENT) {
-    return raw as ClientSlug;
-  }
-  return DEFAULT_CLIENT;
-}
 
 /**
  * Resolve theme preset for a business contract.
@@ -97,18 +91,22 @@ export function getClientTheme(client: ClientSlug): ClientThemeContract {
  * Active helpers: resolve the client slug via env and return contracts.
  */
 export function getActiveBusiness(): ClientBusinessContract {
-  return getClientBusiness(resolveClientSlug());
+  return getClientBusiness(getActiveClientSlug());
 }
 
 export function getActiveTheme(): ClientThemeContract {
-  return getClientTheme(resolveClientSlug());
+  return getClientTheme(getActiveClientSlug());
 }
 
 /**
  * Optional helpers (useful for docs/admin later).
  */
-export function listClients(): string[] {
-  return Object.keys(BUSINESS_BY_CLIENT);
+export function listClients(): ClientSlug[] {
+  return Object.keys(BUSINESS_BY_CLIENT) as ClientSlug[];
+}
+
+export function getActiveClientSlug(): ClientSlug {
+  return resolveClientSlugPure(listClients(), DEFAULT_CLIENT) as ClientSlug;
 }
 
 export function listThemePresets(): ThemePresetName[] {
